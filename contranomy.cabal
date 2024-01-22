@@ -58,16 +58,25 @@ common common-options
     -- blackboxes attached for them. You can disable this, but be sure to add
     -- a no-specialize pragma to every function with a blackbox.
     -fno-worker-wrapper
-  default-language: Haskell2010
+
+    -- Strict annotations - while sometimes preventing space leaks - trigger
+    -- optimizations Clash can't deal with. See:
+    --
+    --    https://github.com/clash-lang/clash-compiler/issues/2361
+    --
+    -- These flags disables these optimizations. Note that the fields will
+    -- remain strict.
+    -fno-unbox-small-strict-fields
+    -fno-unbox-strict-fields
   build-depends:
     base,
     Cabal,
 
     -- clash-prelude will set suitable version bounds for the plugins
-    clash-prelude >= 1.2.3 && < 1.4,
+    clash-prelude >= 1.8.1 && < 1.10,
     ghc-typelits-natnormalise,
     ghc-typelits-extra,
-    ghc-typelits-knownnat,
+    ghc-typelits-knownnat
 
 library
   import: common-options
@@ -100,18 +109,21 @@ library
 
 executable clash
   main-is: bin/Clash.hs
+  default-language: Haskell2010
   Build-Depends: base, clash-ghc, contranomy
   if !os(Windows)
     ghc-options: -dynamic
 
 executable clashi
   main-is: bin/Clashi.hs
+  default-language: Haskell2010
   if !os(Windows)
     ghc-options: -dynamic
   build-depends: base, clash-ghc, contranomy
 
 test-suite test-library
   import: common-options
+  default-language: Haskell2010
   hs-source-dirs: tests
   type: exitcode-stdio-1.0
   ghc-options: -threaded
