@@ -1,7 +1,7 @@
 cradle:
   multi:
     - path: "./src"
-      config: {cradle: {cabal: {component: "lib:clash-example-project"}}}
+      config: {cradle: {cabal: {component: "lib:contranomy"}}}
     - path: "./tests"
       config: {cradle: {cabal: {component: "test-suite:test-library"}}}
     - path: "./bin/Clash.hs"
